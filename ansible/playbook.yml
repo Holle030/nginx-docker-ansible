@@ -1,0 +1,53 @@
+---
+- name: Deploy Nginx Docker Container (Local Development)
+  hosts: webservers
+  
+  tasks:
+    - name: Check if Docker is running
+      shell: docker ps
+      register: docker_check
+      failed_when: docker_check.rc != 0
+    
+    - name: Stop and remove existing container if exists
+      shell: |
+        docker stop nginx-website || true
+        docker rm nginx-website || true
+      ignore_errors: yes
+    
+    - name: Create project directory in Home
+      file:
+        path: ~/nginx-deployment
+        state: directory
+        mode: '0755'
+    
+    - name: Copy Docker files
+      copy:
+        src: ../docker/
+        dest: ~/nginx-deployment/
+        mode: '0644'
+    
+    - name: Clean up old Docker Compose containers
+      shell: |
+        cd ~/nginx-deployment
+        docker-compose down --remove-orphans || true
+      ignore_errors: yes
+    
+    - name: Start Docker containers fresh
+      shell: |
+        cd ~/nginx-deployment
+        docker-compose up -d --build --force-recreate
+      register: output
+    
+    - name: Wait for container
+      pause:
+        seconds: 3
+    
+    - name: Check if container is running
+      shell: docker ps | grep nginx
+      register: container_status
+      ignore_errors: yes
+    
+    - name: Show status
+      debug:
+        msg: "✅ Container läuft! Erreichbar unter http://localhost:8080"
+      when: container_status.rc == 0
