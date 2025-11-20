@@ -97,9 +97,4 @@ docker rm -f nginx-website
 - [ ] Kubernetes Migration
 
 ## 👤 Autor
-
-Dein Name - 2024
-
-## 📄 Lizenz
-
-MIT
+Holle030
