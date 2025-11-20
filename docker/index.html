@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meine Docker Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f0f0f0;
+        }
+        h1 { color: #333; }
+        .container { background: white; padding: 30px; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hello Docker + Ansible! 🚀</h1>
+        <p>Nginx läuft erfolgreich in Docker 🐳</p>
+        <p>Zeit: <span id="time"></span></p>
+    </div>
+    <script>
+        document.getElementById('time').innerText = new Date().toLocaleString();
+    </script>
+</body>
+</html>
